@@ -1,0 +1,50 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+button{
+    font-size: 20px;
+    padding: 10px;
+    margin: 10px;
+}
+select{
+    position: absolute;
+    right: 50px;
+    top:15px;
+    font-size: 16px;
+    z-index:10;
+    background-color: antiquewhite;
+}
+#gameCanvas{
+    display: block;
+}
+#start_interface{
+    display:block;
+    z-index: 1;
+}
+#game_name{
+    position: absolute;
+    left:50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    font-size: 230%;
+    font-weight: bold;
+    display: block;
+}
+#click_to_start{
+    position: absolute;
+    font-size:130%;
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%, -50%);
+    animation: flash 2s infinite;
+    display: block;
+}
+@keyframes flash {
+   100% { opacity: 1; }
+   50% {opacity: 0;}
+   0%, 15%, 75%   { opacity: 1; }
+}
