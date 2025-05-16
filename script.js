@@ -1,68 +1,144 @@
-//http://192.168.0.206:5500/index.html
-let current_language="en";
-let menu_lables=[];
-let canvas = document.getElementById('gameCanvas');
-let ctx = canvas.getContext('2d');
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-ctx.fillStyle = 'lightblue'; 
-ctx.fillRect(0, 0, canvas.width, canvas.height); 
-function loadText(language){
+let current_language = "en";
+let menu_labels = [];
+let partner_names=["0","1","2","3","4","5"];
+let partner_levels=[0,1,2,3,4,5];
+let user_id = "月";
+
+const userIdDiv = document.getElementById("user_id");
+const mainInterfaceDiv = document.getElementById("mainInterface");
+const startInterfaceDiv = document.getElementById("start_interface");
+const gameName = document.getElementById("game_name");
+const clickToStart = document.getElementById("click_to_start");
+const mainMenuDiv = document.getElementById("main_menu");
+
+// 加载语言文本
+function loadText(language) {
   fetch(`text_${language}.json`)
-  .then(response => response.json())
-  .then(texts => {
-    document.getElementById("title").innerText = texts.title;
-    document.getElementById("click_to_start").innerText = texts.click_to_start;
-    document.getElementById("game_name").innerText=texts.game_name;
-    menu_lables=texts.main_menu;
-    setMainInterface();
-  })
-  .catch(err => console.error('Error loading text:', err));
+    .then((response) => response.json())
+    .then((texts) => {
+      document.getElementById("title").innerText = texts.title;
+      clickToStart.innerText = texts.click_to_start;
+      gameName.innerText = texts.game_name;
+      menu_labels = texts.main_menu;
+      setMainInterface();
+    })
+    .catch((err) => console.error("Error loading text:", err));
 }
-function hideStartInterface(){
-  document.getElementById('gameCanvas').style.display="none";
-    document.getElementById('start_interface').style.display="none";
-}
-function setMainInterface(){
-  let mi=document.getElementById('mainInterface');
-  mi.width=window.innerWidth;
-  mi.height=window.innerHeight;
-  mi.getContext("2d").fillStyle="black";
-  mi.getContext("2d").fillRect(0, 0, canvas.width, canvas.height); 
+
+// 设置主界面内容
+function setMainInterface() {
+  setUserId();
   setMainMenu();
+  setFightingZone();
 }
-function setMainMenu(){
-  let mic=document.getElementById('mainInterface').getContext("2d");
-  let width=window.innerWidth;
-  let height=window.innerHeight;
-  let radius=width/20;
-  let gap=width/45;
-  let gap_count=1;
-  let y=height/3;
-  for(let i=0;i<8;i++){
-    let centerX=gap*gap_count+radius*(i*2+1), centerY=y;
-    mic.beginPath();
-    mic.strokeStyle="gold";
-    mic.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    mic.stroke();
-    gap_count++;
-    //text
-    mic.fillStyle = "white";           // 文字颜色
-    mic.font = `${radius*0.7}px Arial`;    // 字体大小，设置为半径大小比较合适
-    mic.textAlign = "center";          // 水平居中
-    mic.textBaseline = "middle";       // 垂直居中
-    mic.fillText(`${menu_lables[i]}`, centerX, centerY); // 在圆心写文字
+
+// 显示用户ID
+function setUserId() {
+  userIdDiv.innerText = user_id;
+}
+
+// 设置战斗区域（这里只是一个边框，样式已用CSS）
+function setFightingZone() {
+  // 这里不用JS画，CSS已处理边框和位置
+}
+
+// 创建主菜单按钮
+function setMainMenu() {
+  mainMenuDiv.innerHTML = "";
+  for (let i = 0; i < menu_labels.length; i++) {
+    let btn = document.createElement("div");
+    btn.classList.add("menu_button");
+    btn.addEventListener("click",()=>{
+      setMenuDisplay(i);
+    });
+    btn.innerText = menu_labels[i];
+    mainMenuDiv.appendChild(btn);
   }
 }
-document.getElementById('languageSelect').addEventListener('change', (event) => {
+function setMenuDisplay(menu){
+  const menu_list=["Ally","Ring", "Lair","Shop","Explore","Duel","Guide","Bonus"];
+  for(let i=0;i<1;i++){//This should be 8----=================================================
+    document.getElementById(`${menu_list[i]}`).style.display="none";
+  }
+  switch(menu){
+    case 0:
+      openAlly();
+      break;
+    case 1:
+      openRing();
+      break;
+    case 2:
+      openLair();
+      break;
+    case 3:
+      openShop();
+      break;
+    case 4:
+      openExplore();
+      break;
+    case 5:
+      openDuel();
+      break;
+    case 6:
+      openGuide();
+      break;
+    case 6:
+      openBonus();
+      break;
+  }
+}
+function openAlly(){
+  document.getElementById("Ally").style.display="block";
+  for(let i=0;i<6;i++){
+    document.getElementById(`name${i}`).innerText=partner_names[i];
+    document.getElementById(`lv${i}`).innerText=partner_levels[i];
+  }
+}
+// 事件监听 - 语言切换
+document.getElementById("languageSelect").addEventListener("change", (event) => {
   current_language = event.target.value;
   loadText(current_language);
 });
-document.getElementById("gameCanvas").addEventListener("click", (event)=>{
 
-  hideStartInterface();
-  document.getElementById('mainInterface').style.display="block";
+// 点击开始界面，切换主界面
+clickToStart.addEventListener("click", () => {
+  startInterfaceDiv.style.display = "none";
+  mainInterfaceDiv.style.display = "block";
   setMainInterface();
 });
 
+// 页面加载时初始化文本
 loadText(current_language);
+
+const partnerContainer = document.getElementById("partnerContainer");
+
+let startX = 0;
+let currentX = 0;
+let translateX = 0;
+let isDragging = false;
+
+partnerContainer.addEventListener("touchstart", (e) => {
+  isDragging = true;
+  startX = e.touches[0].clientX;
+  partnerContainer.style.transition = "none";
+});
+
+partnerContainer.addEventListener("touchmove", (e) => {
+  if (!isDragging) return;
+  currentX = e.touches[0].clientX;
+  const deltaX = currentX - startX;
+  partnerContainer.style.transform = `translateX(${translateX + deltaX}px)`;
+});
+
+partnerContainer.addEventListener("touchend", () => {
+  translateX += currentX - startX;
+  isDragging = false;
+
+  // 限制滑动范围，避免滑出边界
+  const maxTranslate = 0;
+  const minTranslate = -(partnerContainer.scrollWidth - document.getElementById("partnerWrapper").offsetWidth);
+  if (translateX > maxTranslate) translateX = maxTranslate;
+  if (translateX < minTranslate) translateX = minTranslate;
+
+  partnerContainer.style.transform = `translateX(${translateX}px)`;
+});
