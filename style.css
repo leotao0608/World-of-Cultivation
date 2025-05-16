@@ -1,50 +1,157 @@
-body{
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-    position: relative;
+/* 基础重置 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  background: rgb(0, 0, 0);
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  user-select: none;
 }
-button{
-    font-size: 20px;
-    padding: 10px;
-    margin: 10px;
+
+/* 语言选择 */
+select {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 16px;
+  z-index: 10;
+  background-color: antiquewhite;
 }
-select{
-    position: absolute;
-    right: 50px;
-    top:15px;
-    font-size: 16px;
-    z-index:10;
-    background-color: antiquewhite;
+
+/* 开始界面 */
+#start_interface {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: lightblue;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-#gameCanvas{
-    display: block;
+
+#game_name {
+  font-size: 2.3rem;
+  font-weight: bold;
+  margin-bottom: 3rem;
 }
-#start_interface{
-    display:block;
-    z-index: 1;
+
+#click_to_start {
+  font-size: 1.3rem;
+  animation: flash 2s infinite;
+  cursor: pointer;
 }
-#game_name{
-    position: absolute;
-    left:50%;
-    top: 25%;
-    transform: translate(-50%, -50%);
-    font-size: 230%;
-    font-weight: bold;
-    display: block;
-}
-#click_to_start{
-    position: absolute;
-    font-size:130%;
-    left: 50%;
-    top: 70%;
-    transform: translate(-50%, -50%);
-    animation: flash 2s infinite;
-    display: block;
-}
+
 @keyframes flash {
-   100% { opacity: 1; }
-   50% {opacity: 0;}
-   0%, 15%, 75%   { opacity: 1; }
+  0%, 15%, 75%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
+
+/* 主界面 */
+
+/* 用户ID - 位置和字体大小 */
+#user_id {
+  position: absolute;
+  top: 15px;    /* 约等于 25px */
+  left: 20px;     /* 约等于 20px */
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+  z-index: 3;
+}
+
+/* 战斗区 - 边框框住的区域 */
+#fighting_zone {
+  position: absolute;
+  left: 2.22vw;   /* 1/45 ≈ 2.22% */
+  top: calc(2.22vw + 4vh); /* 1/45*width + 1/25*height */
+  width: 95.56vw;  /* 43/45 ≈ 95.56% */
+  height: 23.33vh; /* 7/30 ≈ 23.33% */
+  border: 2px solid gray;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+/* 主菜单容器 */
+#main_menu {
+  position: absolute;
+  top: 30vh;  /* height / 3 */
+  left: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 1.5vw; /* gap 与按钮间距 */
+  gap: 1.4vw; /* 画布宽度的1/45 */
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+/* 菜单按钮 */
+.menu_button {
+  width: 10vw;    /* 直径 = 2 * radius, radius = width/20 */
+  height: 10vw;
+  border: 2px solid gold;
+  border-radius: 50%;
+  color: white;
+  font-size: 2.5vw; /* 约为半径的70% */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: transparent;
+  transition: background-color 0.3s;
+  flex-shrink: 0;
+}
+
+.menu_button:hover {
+  color: rgb(136, 240, 98);
+  font-weight: bold;
+}
+
+#Ally{
+  display: none;
+}
+#partnerWrapper {
+  position: absolute;
+  top: 37vh;
+  left: 3vw;
+  width: 94vw;
+  height: 7vh;
+  overflow: hidden;
+  border: 2px solid rgb(179, 175, 175);
+  border-radius: 10px;
+  background: rgb(34, 34, 34);
+  z-index: 4;
+  padding: 0.3vh 1vw;
+}
+
+#partnerContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 2vw;
+  height: 100%;
+  transition: transform 0.2s ease;
+  touch-action: pan-y; /* 允许水平滑动 */
+}
+
+.partnerCard {
+  border: 1px solid rgb(179, 175, 175);
+  width: 25vw;
+  height: 100%;
+  background: none;
+  border-radius: 12px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
