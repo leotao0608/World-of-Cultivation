@@ -1,22 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title id="title"></title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <canvas id="gameCanvas"></canvas>
-  <canvas id="mainInterface" style="display:none"></canvas>
   <select id="languageSelect">
     <option value="en" selected>English</option>
     <option value="zh">中文</option>
   </select>
+
   <div id="start_interface">
     <h1 id="game_name"></h1>
     <div id="click_to_start"></div>
+  </div>
+
+  <div id="mainInterface" style="display:none;">
+    <div id="user_id"></div>
+    <div id="fighting_zone"></div>
+    <div id="main_menu"></div>
+  </div>
+  <div id="Ally">
+    <div id="partnerWrapper">
+      <div id="partnerContainer">
+        <div id="partner0" class="partnerCard">
+          <div id="name0" class="name"></div>
+          <div id="lv0" class="level"></div>
+        </div>
+        <div id="partner1" class="partnerCard">
+          <div id="name1" class="name"></div>
+          <div id="lv1" class="level"></div>
+        </div>
+        <div id="partner2" class="partnerCard">
+          <div id="name2" class="name"></div>
+          <div id="lv2" class="level"></div>
+        </div>
+        <div id="partner3" class="partnerCard">
+          <div id="name3" class="name"></div>
+          <div id="lv3" class="level"></div>
+        </div>
+        <div id="partner4" class="partnerCard">
+          <div id="name4" class="name"></div>
+          <div id="lv4" class="level"></div>
+        </div>
+        <div id="partner5" class="partnerCard">
+          <div id="name5" class="name"></div>
+          <div id="lv5" class="level"></div>
+        </div>
+        
+      </div>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>
